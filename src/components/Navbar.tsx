@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Plus, Calendar, User, LogIn } from "lucide-react";
+import { Plus, Calendar, User, LogIn, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -36,6 +36,11 @@ const Navbar = () => {
                   <Link to="/create">
                     <Button size="sm" className="gap-1.5">
                       <Plus className="h-4 w-4" /> Create
+                    </Button>
+                  </Link>
+                  <Link to="/messages">
+                    <Button variant="ghost" size="sm" className="gap-1.5">
+                      <MessageSquare className="h-4 w-4" />
                     </Button>
                   </Link>
                   <Link to="/account">

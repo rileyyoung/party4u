@@ -7,6 +7,8 @@ import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import EventComments from "@/components/EventComments";
+import AttendeeList from "@/components/AttendeeList";
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -202,6 +204,9 @@ const EventDetail = () => {
               <h2 className="font-display text-xl font-semibold">About this event</h2>
               <p className="text-muted-foreground leading-relaxed">{event.description}</p>
             </div>
+
+            <AttendeeList eventId={id!} />
+            <EventComments eventId={id!} />
           </div>
 
           {/* Registration panel */}
