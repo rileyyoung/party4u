@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import EventCard from "@/components/EventCard";
+import EventPost from "@/components/EventPost";
 import { supabase } from "@/integrations/supabase/client";
 
 const categories = ["All", "Design", "Technology", "Networking", "Wellness", "Business", "Other"];
@@ -17,7 +17,7 @@ const Index = () => {
       const { data, error } = await supabase
         .from("events")
         .select("*")
-        .order("date", { ascending: true });
+        .order("created_at", { ascending: false });
       if (!error && data) setEvents(data);
       setLoading(false);
     };
@@ -40,15 +40,16 @@ const Index = () => {
       <Navbar />
       <HeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
-      <main className="mx-auto max-w-6xl px-6 pb-20">
-        <div className="flex flex-wrap gap-2 py-8">
+      <main className="mx-auto max-w-2xl pb-20">
+        {/* Category filters */}
+        <div className="flex flex-wrap gap-2 px-4 py-6 sm:px-6">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`rounded-full px-4 py-1.5 font-body text-sm font-medium transition-all ${
+              className={`rounded-full px-4 py-1.5 font-body text-xs font-medium transition-all ${
                 activeCategory === cat
-                  ? "bg-primary text-primary-foreground shadow-soft"
+                  ? "bg-primary text-primary-foreground shadow-soft glow-primary"
                   : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }`}
             >
@@ -57,20 +58,22 @@ const Index = () => {
           ))}
         </div>
 
+        {/* Feed */}
         {loading ? (
           <div className="py-20 text-center">
-            <p className="text-muted-foreground">Loading events...</p>
+            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <p className="mt-3 text-sm text-muted-foreground">Loading the vibes...</p>
           </div>
         ) : filteredEvents.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="divide-y divide-border/50">
             {filteredEvents.map((event, i) => (
-              <EventCard key={event.id} event={event} index={i} />
+              <EventPost key={event.id} event={event} index={i} />
             ))}
           </div>
         ) : (
-          <div className="py-20 text-center">
-            <p className="font-display text-xl font-semibold text-muted-foreground">No events found</p>
-            <p className="mt-2 text-sm text-muted-foreground">Try adjusting your search or create the first event!</p>
+          <div className="py-20 text-center px-6">
+            <p className="font-display text-xl font-semibold text-muted-foreground">No parties found 🪩</p>
+            <p className="mt-2 text-sm text-muted-foreground">Try a different vibe or throw the first one!</p>
           </div>
         )}
       </main>
