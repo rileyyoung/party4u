@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Calendar, MapPin, Users, ArrowRight, LogOut, User } from "lucide-react";
+import { Calendar, MapPin, Users, ArrowRight, LogOut, User, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
+import ProfileEditDialog from "@/components/ProfileEditDialog";
 
 interface EventWithRegistration {
   id: string;
@@ -31,7 +33,7 @@ const Account = () => {
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<EventWithRegistration[]>([]);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<{ full_name: string; email: string } | null>(null);
+  const [profile, setProfile] = useState<{ full_name: string; email: string; avatar_url: string | null } | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -46,7 +48,7 @@ const Account = () => {
       // Fetch profile
       const { data: profileData } = await supabase
         .from("profiles")
-        .select("full_name, email")
+        .select("full_name, email, avatar_url")
         .eq("auth_id", user!.id)
         .single();
       setProfile(profileData);
@@ -130,17 +132,25 @@ const Account = () => {
         {/* Profile header */}
         <div className="animate-fade-in mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <User className="h-6 w-6 text-primary" />
-            </div>
+            <Avatar className="h-14 w-14">
+              <AvatarImage src={profile?.avatar_url || undefined} />
+              <AvatarFallback className="text-xl font-display">{profile?.full_name?.[0] || "?"}</AvatarFallback>
+            </Avatar>
             <div>
               <h1 className="font-display text-2xl font-bold">{profile?.full_name || "Your Account"}</h1>
               <p className="text-sm text-muted-foreground">{profile?.email || user?.email}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={handleSignOut} className="gap-1.5">
-            <LogOut className="h-4 w-4" /> Sign Out
-          </Button>
+          <div className="flex items-center gap-2">
+            <ProfileEditDialog profile={profile} onProfileUpdated={fetchData}>
+              <Button variant="outline" size="sm" className="gap-1.5">
+                <Pencil className="h-4 w-4" /> Edit Profile
+              </Button>
+            </ProfileEditDialog>
+            <Button variant="outline" size="sm" onClick={handleSignOut} className="gap-1.5">
+              <LogOut className="h-4 w-4" /> Sign Out
+            </Button>
+          </div>
         </div>
 
         {/* Tabs */}

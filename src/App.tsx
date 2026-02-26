@@ -9,6 +9,8 @@ import EventDetail from "./pages/EventDetail";
 import CreateEvent from "./pages/CreateEvent";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
+import Profile from "./pages/Profile";
+import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/create" element={<CreateEvent />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
