@@ -9,6 +9,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import EventComments from "@/components/EventComments";
 import AttendeeList from "@/components/AttendeeList";
+import GuestApprovalPanel from "@/components/GuestApprovalPanel";
+import { Textarea } from "@/components/ui/textarea";
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -19,6 +21,9 @@ const EventDetail = () => {
   const [registered, setRegistered] = useState(false);
   const [registering, setRegistering] = useState(false);
   const [attendeeCount, setAttendeeCount] = useState(0);
+  const [gateAnswer, setGateAnswer] = useState("");
+  const [regStatus, setRegStatus] = useState<string | null>(null);
+  const [isOrganizer, setIsOrganizer] = useState(false);
 
   useEffect(() => {
     fetchEvent();
@@ -43,13 +48,21 @@ const EventDetail = () => {
       const { data: countData } = await supabase.rpc("get_event_attendee_count", { event_uuid: id });
       setAttendeeCount(countData || 0);
 
-      // Check if user is registered
+      // Check if user is registered and get status
       if (user) {
-        const { data: regData } = await supabase
-          .from("registrations")
-          .select("id")
-          .eq("event_id", id!);
-        setRegistered(regData && regData.length > 0);
+        const { data: profile } = await supabase.from("profiles").select("id").eq("auth_id", user.id).single();
+        if (profile) {
+          setIsOrganizer(eventData.organizer_id === profile.id);
+          const { data: regData } = await supabase
+            .from("registrations")
+            .select("id, status")
+            .eq("event_id", id!)
+            .eq("user_id", profile.id);
+          if (regData && regData.length > 0) {
+            setRegistered(true);
+            setRegStatus((regData[0] as any).status);
+          }
+        }
       }
     } catch (err) {
       console.error(err);
@@ -74,15 +87,23 @@ const EventDetail = () => {
 
       if (!profile) throw new Error("Profile not found");
 
-      const { error } = await supabase.from("registrations").insert({
+      const insertData: any = {
         user_id: profile.id,
         event_id: id!,
-      });
+        status: event.requires_approval ? "pending" : "approved",
+        gate_answer: event.requires_approval && gateAnswer.trim() ? gateAnswer.trim() : null,
+      };
+
+      const { error } = await supabase.from("registrations").insert(insertData);
 
       if (error) throw error;
       setRegistered(true);
-      setAttendeeCount((c) => c + 1);
-      toast({ title: "You're registered! 🎉", description: `See you at ${event.title}` });
+      setRegStatus(insertData.status);
+      if (!event.requires_approval) setAttendeeCount((c) => c + 1);
+      toast({
+        title: event.requires_approval ? "Request sent! 🙏" : "You're registered! 🎉",
+        description: event.requires_approval ? "The host will review your request" : `See you at ${event.title}`,
+      });
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
@@ -205,6 +226,9 @@ const EventDetail = () => {
               <p className="text-muted-foreground leading-relaxed">{event.description}</p>
             </div>
 
+            {isOrganizer && event.requires_approval && (
+              <GuestApprovalPanel eventId={id!} gateQuestion={event.gate_question} />
+            )}
             <AttendeeList eventId={id!} />
             <EventComments eventId={id!} />
           </div>
@@ -215,20 +239,47 @@ const EventDetail = () => {
               {registered ? (
                 <div className="space-y-4 text-center">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                    <span className="text-3xl">🎉</span>
+                    <span className="text-3xl">{regStatus === "pending" ? "⏳" : regStatus === "denied" ? "🚫" : "🎉"}</span>
                   </div>
-                  <h3 className="font-display text-xl font-semibold">You're registered!</h3>
-                  <p className="text-sm text-muted-foreground">We'll see you there. Check your account for details.</p>
-                  <Button variant="outline" className="w-full" onClick={handleCancelRegistration}>
-                    Cancel Registration
-                  </Button>
+                  <h3 className="font-display text-xl font-semibold">
+                    {regStatus === "pending" ? "Awaiting approval" : regStatus === "denied" ? "Access denied" : "You're registered!"}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {regStatus === "pending"
+                      ? "The host will review your request soon."
+                      : regStatus === "denied"
+                      ? "The host has denied your request."
+                      : "We'll see you there. Check your account for details."}
+                  </p>
+                  {regStatus !== "denied" && (
+                    <Button variant="outline" className="w-full" onClick={handleCancelRegistration}>
+                      {regStatus === "pending" ? "Cancel Request" : "Cancel Registration"}
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <h3 className="font-display text-lg font-semibold">Register for this event</h3>
+                  <h3 className="font-display text-lg font-semibold">
+                    {event.requires_approval ? "Request to attend" : "Register for this event"}
+                  </h3>
                   <p className="text-sm text-muted-foreground">Free · {spotsLeft} spots remaining</p>
-                  <Button className="w-full" onClick={handleRegister} disabled={registering || spotsLeft <= 0}>
-                    {registering ? "Registering..." : spotsLeft <= 0 ? "Event Full" : user ? "Register Now" : "Sign In to Register"}
+                  {event.requires_approval && event.gate_question && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">{event.gate_question}</p>
+                      <Textarea
+                        placeholder="Your answer..."
+                        value={gateAnswer}
+                        onChange={(e) => setGateAnswer(e.target.value)}
+                        className="min-h-[60px] resize-none"
+                      />
+                    </div>
+                  )}
+                  <Button
+                    className="w-full"
+                    onClick={handleRegister}
+                    disabled={registering || spotsLeft <= 0 || (event.requires_approval && event.gate_question && !gateAnswer.trim())}
+                  >
+                    {registering ? "Submitting..." : spotsLeft <= 0 ? "Event Full" : user ? (event.requires_approval ? "Request Access" : "Register Now") : "Sign In to Register"}
                   </Button>
                 </div>
               )}

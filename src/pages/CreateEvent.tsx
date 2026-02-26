@@ -19,6 +19,7 @@ const CreateEvent = () => {
   const [isOnline, setIsOnline] = useState(false);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("");
+  const [requiresApproval, setRequiresApproval] = useState(false);
 
   useEffect(() => {
     if (!user) navigate("/auth");
@@ -51,7 +52,9 @@ const CreateEvent = () => {
         is_online: isOnline,
         max_attendees: parseInt(formData.get("capacity") as string) || 100,
         cover_image: (formData.get("cover") as string) || null,
-      });
+        requires_approval: requiresApproval,
+        gate_question: requiresApproval ? (formData.get("gate_question") as string) || null : null,
+      } as any);
 
       if (error) throw error;
       toast({ title: "Event created! 🎉", description: "Your event is now live." });
@@ -135,6 +138,27 @@ const CreateEvent = () => {
             <Label htmlFor="cover">Cover Image URL</Label>
             <Input id="cover" name="cover" placeholder="https://images.unsplash.com/..." />
           </div>
+
+          <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+            <div>
+              <p className="font-medium text-sm">🔒 Require Approval</p>
+              <p className="text-xs text-muted-foreground">Guests must be approved before they can attend</p>
+            </div>
+            <Switch checked={requiresApproval} onCheckedChange={setRequiresApproval} />
+          </div>
+
+          {requiresApproval && (
+            <div className="space-y-2 animate-fade-in">
+              <Label htmlFor="gate_question">Gate Question</Label>
+              <Textarea
+                id="gate_question"
+                name="gate_question"
+                placeholder="e.g. What's your favorite disco track? 🪩"
+                rows={2}
+              />
+              <p className="text-xs text-muted-foreground">Guests must answer this before requesting access.</p>
+            </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <Button type="submit" className="flex-1" disabled={loading}>
