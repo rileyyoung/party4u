@@ -60,11 +60,13 @@ export type Database = {
           created_at: string
           date: string
           description: string
+          gate_question: string | null
           id: string
           is_online: boolean
           location: string
           max_attendees: number
           organizer_id: string
+          requires_approval: boolean
           time: string
           title: string
           updated_at: string
@@ -75,11 +77,13 @@ export type Database = {
           created_at?: string
           date: string
           description?: string
+          gate_question?: string | null
           id?: string
           is_online?: boolean
           location: string
           max_attendees?: number
           organizer_id: string
+          requires_approval?: boolean
           time: string
           title: string
           updated_at?: string
@@ -90,11 +94,13 @@ export type Database = {
           created_at?: string
           date?: string
           description?: string
+          gate_question?: string | null
           id?: string
           is_online?: boolean
           location?: string
           max_attendees?: number
           organizer_id?: string
+          requires_approval?: boolean
           time?: string
           title?: string
           updated_at?: string
@@ -185,19 +191,25 @@ export type Database = {
         Row: {
           created_at: string
           event_id: string
+          gate_answer: string | null
           id: string
+          status: string
           user_id: string
         }
         Insert: {
           created_at?: string
           event_id: string
+          gate_answer?: string | null
           id?: string
+          status?: string
           user_id: string
         }
         Update: {
           created_at?: string
           event_id?: string
+          gate_answer?: string | null
           id?: string
+          status?: string
           user_id?: string
         }
         Relationships: [
