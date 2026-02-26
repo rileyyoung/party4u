@@ -54,8 +54,8 @@ const Auth = () => {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm animate-fade-in space-y-6">
         <div className="text-center">
-          <Link to="/" className="font-display text-2xl font-bold tracking-tight">
-            Eventful
+           <Link to="/" className="font-display text-3xl font-extrabold tracking-tight text-glow">
+            Party4U
           </Link>
           <p className="mt-2 text-sm text-muted-foreground">
             {isLogin ? "Welcome back" : "Create your account"}
