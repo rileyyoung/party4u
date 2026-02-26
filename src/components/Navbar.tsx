@@ -8,14 +8,14 @@ const Navbar = () => {
   const { user, loading } = useAuth();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-disco-gradient glow-primary">
             <Calendar className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="font-display text-xl font-bold tracking-tight">
-            Eventful
+          <span className="font-display text-xl font-extrabold tracking-tight text-glow">
+            Party4U
           </span>
         </Link>
 
