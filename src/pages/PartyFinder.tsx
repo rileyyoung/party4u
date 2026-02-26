@@ -18,6 +18,8 @@ const quickPrompts = [
   "🎶 Find me a chill vibe event",
   "📍 What's happening near downtown?",
   "👯 What are my friends going to?",
+  "🎉 Help me create a vibey event posting",
+  "✍️ Write a party description that slaps",
 ];
 
 const PartyFinder = () => {
