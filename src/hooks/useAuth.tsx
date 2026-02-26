@@ -36,7 +36,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Sign out when browser closes if "remember me" was not checked
+    const handleBeforeUnload = () => {
+      if (sessionStorage.getItem("eventful_session_only") === "true") {
+        supabase.auth.signOut();
+        sessionStorage.removeItem("eventful_session_only");
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   const signOut = async () => {
