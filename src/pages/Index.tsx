@@ -1,16 +1,31 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import EventCard from "@/components/EventCard";
-import { mockEvents, categories } from "@/lib/mock-data";
-import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
+
+const categories = ["All", "Design", "Technology", "Networking", "Wellness", "Business", "Other"];
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .order("date", { ascending: true });
+      if (!error && data) setEvents(data);
+      setLoading(false);
+    };
+    fetchEvents();
+  }, []);
 
   const filteredEvents = useMemo(() => {
-    return mockEvents.filter((event) => {
+    return events.filter((event) => {
       const matchesSearch =
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -18,7 +33,7 @@ const Index = () => {
         activeCategory === "All" || event.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory, events]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,7 +41,6 @@ const Index = () => {
       <HeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main className="mx-auto max-w-6xl px-6 pb-20">
-        {/* Category filter */}
         <div className="flex flex-wrap gap-2 py-8">
           {categories.map((cat) => (
             <button
@@ -43,8 +57,11 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Events grid */}
-        {filteredEvents.length > 0 ? (
+        {loading ? (
+          <div className="py-20 text-center">
+            <p className="text-muted-foreground">Loading events...</p>
+          </div>
+        ) : filteredEvents.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredEvents.map((event, i) => (
               <EventCard key={event.id} event={event} index={i} />
@@ -52,12 +69,8 @@ const Index = () => {
           </div>
         ) : (
           <div className="py-20 text-center">
-            <p className="font-display text-xl font-semibold text-muted-foreground">
-              No events found
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Try adjusting your search or category filter.
-            </p>
+            <p className="font-display text-xl font-semibold text-muted-foreground">No events found</p>
+            <p className="mt-2 text-sm text-muted-foreground">Try adjusting your search or create the first event!</p>
           </div>
         )}
       </main>

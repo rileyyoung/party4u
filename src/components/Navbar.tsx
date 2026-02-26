@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { Plus, Calendar } from "lucide-react";
+import { Plus, Calendar, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, loading } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -17,23 +19,40 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <Link
             to="/"
             className={`font-body text-sm font-medium transition-colors hover:text-foreground ${
-              location.pathname === "/"
-                ? "text-foreground"
-                : "text-muted-foreground"
+              location.pathname === "/" ? "text-foreground" : "text-muted-foreground"
             }`}
           >
             Discover
           </Link>
-          <Link to="/create">
-            <Button size="sm" className="gap-1.5">
-              <Plus className="h-4 w-4" />
-              Create Event
-            </Button>
-          </Link>
+
+          {!loading && (
+            <>
+              {user ? (
+                <>
+                  <Link to="/create">
+                    <Button size="sm" className="gap-1.5">
+                      <Plus className="h-4 w-4" /> Create
+                    </Button>
+                  </Link>
+                  <Link to="/account">
+                    <Button variant="outline" size="sm" className="gap-1.5">
+                      <User className="h-4 w-4" /> Account
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <Link to="/auth">
+                  <Button size="sm" className="gap-1.5">
+                    <LogIn className="h-4 w-4" /> Sign In
+                  </Button>
+                </Link>
+              )}
+            </>
+          )}
         </div>
       </div>
     </nav>
