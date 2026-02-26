@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Plus, Calendar, User, LogIn, MessageSquare } from "lucide-react";
+import { Plus, Calendar, User, LogIn, MessageSquare, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -27,6 +27,14 @@ const Navbar = () => {
             }`}
           >
             Discover
+          </Link>
+          <Link
+            to="/find"
+            className={`font-body text-sm font-medium transition-colors hover:text-foreground ${
+              location.pathname === "/find" ? "text-foreground" : "text-muted-foreground"
+            }`}
+          >
+            <span className="flex items-center gap-1"><Sparkles className="h-3.5 w-3.5" /> AI Finder</span>
           </Link>
 
           {!loading && (

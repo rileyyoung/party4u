@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
+import PartyFinder from "./pages/PartyFinder";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/account" element={<Account />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/messages" element={<Messages />} />
+            <Route path="/find" element={<PartyFinder />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
