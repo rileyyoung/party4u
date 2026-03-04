@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Outfit", "sans-serif"],
+        display: ["Fraunces", "serif"],
         body: ["Space Mono", "monospace"],
       },
       colors: {
