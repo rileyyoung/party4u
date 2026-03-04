@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Fraunces", "serif"],
-        body: ["Space Mono", "monospace"],
+        display: ["Cormorant Garamond", "serif"],
+        body: ["Cormorant Garamond", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

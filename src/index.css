@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer base {
   :root {
@@ -45,8 +46,8 @@
     --sidebar-border: 275 20% 20%;
     --sidebar-ring: 280 80% 60%;
 
-    --font-display: 'Fraunces', serif;
-    --font-body: 'Space Mono', monospace;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Cormorant Garamond', serif;
 
     --glow-primary: 0 0 30px hsl(280 80% 60% / 0.4), 0 0 60px hsl(280 80% 60% / 0.15);
     --glow-accent: 0 0 30px hsl(310 80% 55% / 0.4), 0 0 60px hsl(310 80% 55% / 0.15);
