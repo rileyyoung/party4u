@@ -37,6 +37,23 @@ const Navbar = () => {
             <span className="flex items-center gap-1"><Sparkles className="h-3.5 w-3.5" /> AI Finder</span>
           </Link>
 
+          <a
+            href="https://rileymyoung.com/tennis"
+            target="_blank"
+            rel="noreferrer"
+            className="font-body text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Tennis
+          </a>
+          <a
+            href="https://rileymyoung.com"
+            target="_blank"
+            rel="noreferrer"
+            className="font-body text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            rileymyoung.com
+          </a>
+
           {!loading && (
             <>
               {user ? (
