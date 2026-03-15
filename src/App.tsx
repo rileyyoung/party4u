@@ -16,13 +16,20 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const TENNIS_BASENAME = "/tennis";
+
+const getBasename = () => {
+  if (typeof window === "undefined") return "/";
+  return window.location.pathname.startsWith(TENNIS_BASENAME) ? TENNIS_BASENAME : "/";
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={getBasename()}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/event/:id" element={<EventDetail />} />
