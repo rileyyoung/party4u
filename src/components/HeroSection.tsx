@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,34 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ searchQuery, onSearchChange }: HeroSectionProps) => {
+  const variants = [
+    {
+      className: "font-display text-glow bg-disco-gradient bg-clip-text text-transparent",
+    },
+    {
+      className:
+        "font-body text-glow-accent bg-clip-text text-transparent bg-[linear-gradient(135deg,hsl(200_90%_60%),hsl(310_80%_55%))]",
+    },
+    {
+      className:
+        "font-mono bg-clip-text text-transparent bg-[linear-gradient(135deg,hsl(140_80%_55%),hsl(280_80%_60%))]",
+    },
+    {
+      className:
+        "font-display bg-clip-text text-transparent bg-[linear-gradient(135deg,hsl(50_95%_60%),hsl(280_80%_60%))]",
+    },
+  ];
+
+  const [variantIndex, setVariantIndex] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setVariantIndex((i) => (i + 1) % variants.length);
+    }, 900);
+
+    return () => window.clearInterval(id);
+  }, [variants.length]);
+
   return (
     <section className="relative overflow-hidden">
       <div
@@ -18,7 +47,12 @@ const HeroSection = ({ searchQuery, onSearchChange }: HeroSectionProps) => {
       <div className="relative mx-auto max-w-6xl px-6 py-24 text-center">
         <h1 className="animate-fade-in font-display text-5xl font-extrabold tracking-tight sm:text-7xl">
           The party starts{" "}
-          <span className="text-glow bg-disco-gradient bg-clip-text text-transparent">here</span>
+          <span
+            key={variantIndex}
+            className={`inline-block lowercase animate-fade-in transition-all duration-500 ${variants[variantIndex]?.className || ""}`}
+          >
+            now
+          </span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl animate-fade-in text-base text-muted-foreground" style={{ animationDelay: "100ms" }}>
           Discover the hottest events & nightlife near you — or throw your own party.
