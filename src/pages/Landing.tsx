@@ -6,7 +6,7 @@ const Landing = () => {
       <div className="mx-auto w-full max-w-2xl">
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-glow">Riley Young</h1>
         <p className="mt-4 text-muted-foreground">
-          My creative outlet / documentation to hold myself accountable for learning something new and exciting.
+          my secret creative outlet!
         </p>
 
         <div className="mt-10 rounded-xl border border-border bg-card p-6 shadow-card">
