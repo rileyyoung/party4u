@@ -3,6 +3,10 @@
     {
       "source": "/tennis/:path*",
       "destination": "https://party4u-nm1nladb3-rileyyoungs-projects.vercel.app/:path*"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "https://party4u-nm1nladb3-rileyyoungs-projects.vercel.app/assets/:path*"
     }
   ]
 }
