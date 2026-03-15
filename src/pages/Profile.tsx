@@ -54,7 +54,7 @@ const Profile = () => {
           <p className="text-sm text-muted-foreground">Member since {new Date(profile.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
           
           {!isOwnProfile && user && (
-            <Link to={`/messages?to=${profile.id}`}>
+            <Link to={`/tennis/messages?to=${profile.id}`}>
               <Button variant="outline" className="gap-2">
                 <MessageSquare className="h-4 w-4" /> Message
               </Button>
@@ -66,7 +66,7 @@ const Profile = () => {
           <div className="mt-10 space-y-3">
             <h2 className="font-display text-lg font-semibold">Events attending</h2>
             {events.map((e: any) => (
-              <Link key={e.id} to={`/event/${e.id}`} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-all hover:shadow-card">
+              <Link key={e.id} to={`/tennis/event/${e.id}`} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-all hover:shadow-card">
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] font-bold tracking-wider text-primary">
                     {new Date(e.date + "T00:00:00").toLocaleString("en-US", { month: "short" }).toUpperCase()}

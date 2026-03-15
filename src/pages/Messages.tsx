@@ -172,7 +172,7 @@ const Messages = () => {
     return date.toLocaleDateString([], { month: "short", day: "numeric" });
   };
 
-  if (!user) return <div className="min-h-screen bg-background"><Navbar /><p className="py-32 text-center text-muted-foreground">Please <Link to="/auth" className="text-primary hover:underline">sign in</Link> to view messages.</p></div>;
+  if (!user) return <div className="min-h-screen bg-background"><Navbar /><p className="py-32 text-center text-muted-foreground">Please <Link to="/tennis/auth" className="text-primary hover:underline">sign in</Link> to view messages.</p></div>;
 
   return (
     <div className="min-h-screen bg-background">

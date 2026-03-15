@@ -37,7 +37,7 @@ const Account = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate("/auth");
+      navigate("/tennis/auth");
       return;
     }
     fetchData();
@@ -80,7 +80,7 @@ const Account = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/");
+    navigate("/tennis");
   };
 
   const today = new Date().toISOString().split("T")[0];
@@ -101,7 +101,7 @@ const Account = () => {
           <span className="font-display text-xl font-bold leading-none">{day}</span>
         </div>
         <div className="flex-1 space-y-1">
-          <Link to={`/event/${e.id}`} className="font-display text-base font-semibold hover:text-primary transition-colors">
+          <Link to={`/tennis/event/${e.id}`} className="font-display text-base font-semibold hover:text-primary transition-colors">
             {e.title}
           </Link>
           <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
@@ -117,7 +117,7 @@ const Account = () => {
               Cancel
             </Button>
           )}
-          <Link to={`/event/${e.id}`}>
+          <Link to={`/tennis/event/${e.id}`}>
             <Button variant="ghost" size="sm"><ArrowRight className="h-4 w-4" /></Button>
           </Link>
         </div>
@@ -169,7 +169,7 @@ const Account = () => {
               <div className="py-16 text-center">
                 <p className="font-display text-lg font-semibold text-muted-foreground">No upcoming events</p>
                 <p className="mt-1 text-sm text-muted-foreground">Browse events and register for one!</p>
-                <Link to="/"><Button className="mt-4">Discover Events</Button></Link>
+                <Link to="/tennis"><Button className="mt-4">Discover Events</Button></Link>
               </div>
             )}
           </TabsContent>

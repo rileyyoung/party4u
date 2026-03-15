@@ -13,15 +13,9 @@ import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import PartyFinder from "./pages/PartyFinder";
 import NotFound from "./pages/NotFound";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
-
-const TENNIS_BASENAME = "/tennis";
-
-const getBasename = () => {
-  if (typeof window === "undefined") return "/";
-  return window.location.pathname.startsWith(TENNIS_BASENAME) ? TENNIS_BASENAME : "/";
-};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -29,16 +23,17 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename={getBasename()}>
+        <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/event/:id" element={<EventDetail />} />
-            <Route path="/create" element={<CreateEvent />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/find" element={<PartyFinder />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/tennis" element={<Index />} />
+            <Route path="/tennis/event/:id" element={<EventDetail />} />
+            <Route path="/tennis/create" element={<CreateEvent />} />
+            <Route path="/tennis/auth" element={<Auth />} />
+            <Route path="/tennis/account" element={<Account />} />
+            <Route path="/tennis/profile/:id" element={<Profile />} />
+            <Route path="/tennis/messages" element={<Messages />} />
+            <Route path="/tennis/find" element={<PartyFinder />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

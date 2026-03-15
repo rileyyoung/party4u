@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/tennis" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-disco-gradient glow-primary">
             <Calendar className="h-4 w-4 text-primary-foreground" />
           </div>
@@ -21,17 +21,17 @@ const Navbar = () => {
 
         <div className="flex items-center gap-4">
           <Link
-            to="/"
+            to="/tennis"
             className={`font-body text-sm font-medium transition-colors hover:text-foreground ${
-              location.pathname === "/" ? "text-foreground" : "text-muted-foreground"
+              location.pathname === "/tennis" ? "text-foreground" : "text-muted-foreground"
             }`}
           >
             Discover
           </Link>
           <Link
-            to="/find"
+            to="/tennis/find"
             className={`font-body text-sm font-medium transition-colors hover:text-foreground ${
-              location.pathname === "/find" ? "text-foreground" : "text-muted-foreground"
+              location.pathname === "/tennis/find" ? "text-foreground" : "text-muted-foreground"
             }`}
           >
             <span className="flex items-center gap-1"><Sparkles className="h-3.5 w-3.5" /> AI Finder</span>
@@ -58,24 +58,24 @@ const Navbar = () => {
             <>
               {user ? (
                 <>
-                  <Link to="/create">
+                  <Link to="/tennis/create">
                     <Button size="sm" className="gap-1.5">
                       <Plus className="h-4 w-4" /> Create
                     </Button>
                   </Link>
-                  <Link to="/messages">
+                  <Link to="/tennis/messages">
                     <Button variant="ghost" size="sm" className="gap-1.5">
                       <MessageSquare className="h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link to="/account">
+                  <Link to="/tennis/account">
                     <Button variant="outline" size="sm" className="gap-1.5">
                       <User className="h-4 w-4" /> Account
                     </Button>
                   </Link>
                 </>
               ) : (
-                <Link to="/auth">
+                <Link to="/tennis/auth">
                   <Button size="sm" className="gap-1.5">
                     <LogIn className="h-4 w-4" /> Sign In
                   </Button>

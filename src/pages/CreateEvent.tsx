@@ -22,7 +22,7 @@ const CreateEvent = () => {
   const [requiresApproval, setRequiresApproval] = useState(false);
 
   useEffect(() => {
-    if (!user) navigate("/auth");
+    if (!user) navigate("/tennis/auth");
   }, [user]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,7 +58,7 @@ const CreateEvent = () => {
 
       if (error) throw error;
       toast({ title: "Event created! 🎉", description: "Your event is now live." });
-      navigate("/");
+      navigate("/tennis");
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {

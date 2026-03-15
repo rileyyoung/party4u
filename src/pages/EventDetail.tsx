@@ -73,7 +73,7 @@ const EventDetail = () => {
 
   const handleRegister = async () => {
     if (!user) {
-      navigate("/auth");
+      navigate("/tennis/auth");
       return;
     }
     setRegistering(true);
@@ -153,7 +153,7 @@ const EventDetail = () => {
         <Navbar />
         <div className="flex flex-col items-center justify-center py-32">
           <p className="font-display text-2xl font-bold">Event not found</p>
-          <Link to="/" className="mt-4 text-primary hover:underline">← Back to events</Link>
+          <Link to="/tennis" className="mt-4 text-primary hover:underline">← Back to events</Link>
         </div>
       </div>
     );
@@ -178,7 +178,7 @@ const EventDetail = () => {
       )}
 
       <main className={`mx-auto max-w-4xl px-6 ${event.cover_image ? "-mt-16 relative" : "pt-8"} pb-20`}>
-        <Link to="/" className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/tennis" className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to events
         </Link>
 

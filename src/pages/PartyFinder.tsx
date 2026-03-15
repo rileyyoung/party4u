@@ -197,7 +197,7 @@ const PartyFinder = () => {
                     <ReactMarkdown
                       components={{
                         a: ({ href, children, ...props }) => {
-                          if (href?.startsWith("/event/")) {
+                          if (href?.startsWith("/tennis/event/")) {
                             return (
                               <a
                                 href={href}

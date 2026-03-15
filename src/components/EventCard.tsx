@@ -25,7 +25,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
 
   return (
     <Link
-      to={`/event/${event.id}`}
+      to={`/tennis/event/${event.id}`}
       className="group block animate-fade-in rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-elevated hover:-translate-y-1 hover:glow-primary"
       style={{ animationDelay: `${index * 80}ms` }}
     >

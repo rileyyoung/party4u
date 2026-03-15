@@ -31,7 +31,7 @@ const AttendeeList = ({ eventId }: { eventId: string }) => {
         {attendees.map((a) => (
           <Link
             key={a.id}
-            to={`/profile/${a.profiles?.id}`}
+            to={`/tennis/profile/${a.profiles?.id}`}
             className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 transition-all hover:shadow-card"
           >
             <Avatar className="h-6 w-6">

@@ -71,7 +71,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
 
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/event/${event.id}`);
+      await navigator.clipboard.writeText(`${window.location.origin}/tennis/event/${event.id}`);
       setShared(true);
       toast({ title: "Link copied! 🔗", description: "Share the party vibes" });
       setTimeout(() => setShared(false), 2000);
@@ -88,7 +88,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
       <div className="px-4 pt-4 pb-2 sm:px-6">
         {/* Author header */}
         <div className="flex items-start gap-3">
-          <Link to={organizer ? `/profile/${organizer.id}` : "#"}>
+          <Link to={organizer ? `/tennis/profile/${organizer.id}` : "#"}>
             <Avatar className="h-10 w-10 ring-2 ring-primary/20">
               <AvatarImage src={organizer?.avatar_url || undefined} />
               <AvatarFallback className="bg-secondary text-xs font-bold">
@@ -99,7 +99,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <Link
-                to={organizer ? `/profile/${organizer.id}` : "#"}
+                to={organizer ? `/tennis/profile/${organizer.id}` : "#"}
                 className="font-display text-sm font-semibold hover:text-primary transition-colors truncate"
               >
                 {organizer?.full_name || "Loading..."}
@@ -113,7 +113,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
 
         {/* Event content */}
         <div className="mt-3 ml-[52px]">
-          <Link to={`/event/${event.id}`} className="group">
+          <Link to={`/tennis/event/${event.id}`} className="group">
             <h3 className="font-display text-lg font-bold leading-snug tracking-tight group-hover:text-primary transition-colors">
               {event.title}
             </h3>
@@ -142,7 +142,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
 
       {/* Cover image */}
       {event.cover_image && (
-        <Link to={`/event/${event.id}`} className="mt-3 block ml-[52px] mr-4 sm:mr-6">
+        <Link to={`/tennis/event/${event.id}`} className="mt-3 block ml-[52px] mr-4 sm:mr-6">
           <div className="overflow-hidden rounded-xl border border-border">
             <img
               src={event.cover_image}
@@ -155,7 +155,7 @@ const EventPost = ({ event, index }: EventPostProps) => {
 
       {/* Engagement bar */}
       <div className="ml-[52px] mr-4 sm:mr-6 mt-2 mb-1 flex items-center justify-between border-t border-border/50 pt-2 pb-3">
-        <Link to={`/event/${event.id}`}>
+        <Link to={`/tennis/event/${event.id}`}>
           <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-primary h-8 px-3">
             <MessageCircle className="h-4 w-4" />
             <span className="text-xs">{commentCount || ""}</span>

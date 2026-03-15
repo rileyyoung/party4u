@@ -95,14 +95,14 @@ const EventComments = ({ eventId }: { eventId: string }) => {
         </div>
       ) : (
         <p className="text-sm text-muted-foreground">
-          <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to comment.
+          <Link to="/tennis/auth" className="text-primary hover:underline">Sign in</Link> to comment.
         </p>
       )}
 
       <div className="space-y-3">
         {comments.map((c) => (
           <div key={c.id} className="flex gap-3 rounded-lg border border-border bg-card p-3">
-            <Link to={`/profile/${c.profiles?.id}`}>
+            <Link to={`/tennis/profile/${c.profiles?.id}`}>
               <Avatar className="h-8 w-8">
                 <AvatarImage src={c.profiles?.avatar_url || undefined} />
                 <AvatarFallback className="text-xs">{c.profiles?.full_name?.[0] || "?"}</AvatarFallback>
@@ -110,7 +110,7 @@ const EventComments = ({ eventId }: { eventId: string }) => {
             </Link>
             <div className="flex-1 space-y-1">
               <div className="flex items-center gap-2">
-                <Link to={`/profile/${c.profiles?.id}`} className="text-sm font-semibold hover:text-primary transition-colors">
+                <Link to={`/tennis/profile/${c.profiles?.id}`} className="text-sm font-semibold hover:text-primary transition-colors">
                   {c.profiles?.full_name || "User"}
                 </Link>
                 <span className="text-xs text-muted-foreground">{timeAgo(c.created_at)}</span>
