@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/tennis/:path*",
+      "destination": "https://party4u-nm1nladb3-rileyyoungs-projects.vercel.app/:path*"
+    }
+  ]
+}
