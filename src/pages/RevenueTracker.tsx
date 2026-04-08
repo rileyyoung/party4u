@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 interface TickerEntry {
   id: number;
@@ -74,21 +75,21 @@ const RevenueTracker = () => {
 
   const mrrEstimate = totalRevenue * 0.82;
 
-  const downloadCSV = () => {
+  const downloadExcel = () => {
     const headers = ["Customer Name", "Customer ID", "Email", "Date Subscribed", "Plan", "Monthly Amount ($)"];
 
     // Pre-seeded historical data
     const historical = [
-      ["Morgan K.", "CUS-7A3F1B", "morgan42@email.com", "2025-01-15 09:23:11", "Pro", "29"],
-      ["Taylor R.", "CUS-9D2E4C", "taylor881@email.com", "2025-01-18 14:05:33", "Business", "79"],
-      ["Casey M.", "CUS-1F8G5H", "casey204@email.com", "2025-02-02 11:47:20", "Starter", "9"],
-      ["Avery P.", "CUS-3J6K8L", "avery77@email.com", "2025-02-10 16:32:45", "Enterprise", "199"],
-      ["Quinn D.", "CUS-5N2Q7R", "quinn512@email.com", "2025-02-22 08:15:59", "Pro", "29"],
-      ["Drew S.", "CUS-8T4U1V", "drew339@email.com", "2025-03-01 10:08:17", "Business", "79"],
-      ["Jamie W.", "CUS-2X6Y9Z", "jamie150@email.com", "2025-03-14 13:55:42", "Starter", "9"],
-      ["Sage B.", "CUS-4A7C3D", "sage624@email.com", "2025-03-28 17:20:08", "Enterprise", "199"],
-      ["Reese F.", "CUS-6E1G8H", "reese88@email.com", "2025-04-05 09:44:31", "Pro", "29"],
-      ["Blake J.", "CUS-9K3L5M", "blake461@email.com", "2025-04-12 15:11:56", "Business", "79"],
+      ["Morgan K.", "CUS-7A3F1B", "morgan42@email.com", "2025-01-15 09:23:11", "Pro", 29],
+      ["Taylor R.", "CUS-9D2E4C", "taylor881@email.com", "2025-01-18 14:05:33", "Business", 79],
+      ["Casey M.", "CUS-1F8G5H", "casey204@email.com", "2025-02-02 11:47:20", "Starter", 9],
+      ["Avery P.", "CUS-3J6K8L", "avery77@email.com", "2025-02-10 16:32:45", "Enterprise", 199],
+      ["Quinn D.", "CUS-5N2Q7R", "quinn512@email.com", "2025-02-22 08:15:59", "Pro", 29],
+      ["Drew S.", "CUS-8T4U1V", "drew339@email.com", "2025-03-01 10:08:17", "Business", 79],
+      ["Jamie W.", "CUS-2X6Y9Z", "jamie150@email.com", "2025-03-14 13:55:42", "Starter", 9],
+      ["Sage B.", "CUS-4A7C3D", "sage624@email.com", "2025-03-28 17:20:08", "Enterprise", 199],
+      ["Reese F.", "CUS-6E1G8H", "reese88@email.com", "2025-04-05 09:44:31", "Pro", 29],
+      ["Blake J.", "CUS-9K3L5M", "blake461@email.com", "2025-04-12 15:11:56", "Business", 79],
     ];
 
     // Live ticker data
@@ -98,19 +99,17 @@ const RevenueTracker = () => {
       e.email,
       e.timestamp.toISOString().replace("T", " ").slice(0, 19),
       e.plan,
-      e.amount.toString(),
+      e.amount,
     ]);
 
     const allRows = [headers, ...historical, ...liveRows];
-    const csvContent = allRows.map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `revenue-tracker-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const ws = XLSX.utils.aoa_to_sheet(allRows);
+    ws["!cols"] = [
+      { wch: 18 }, { wch: 14 }, { wch: 26 }, { wch: 22 }, { wch: 12 }, { wch: 18 },
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Subscribers");
+    XLSX.writeFile(wb, `revenue-tracker-${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   return (
@@ -126,7 +125,7 @@ const RevenueTracker = () => {
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={downloadCSV}
+              onClick={downloadExcel}
               className="rounded-lg border border-[#e9d5ff] bg-[#faf5ff] px-4 py-2 text-sm font-bold text-[#4c1d95] transition-colors hover:bg-[#e9d5ff]"
             >
               ↓ Download Excel
