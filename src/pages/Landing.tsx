@@ -16,7 +16,7 @@ const Landing = () => {
           </p>
           <Link
             to="/tennis"
-            className="mt-5 inline-flex font-body text-sm font-medium text-primary hover:underline"
+            className="mt-5 inline-flex font-body text-lg font-bold text-white hover:underline"
           >
             Open Party4U
           </Link>
@@ -29,7 +29,7 @@ const Landing = () => {
           </p>
           <Link
             to="/revenuetracker"
-            className="mt-5 inline-flex font-body text-sm font-medium text-primary hover:underline"
+            className="mt-5 inline-flex font-body text-lg font-bold text-white hover:underline"
           >
             Open Revenue Tracker
           </Link>
