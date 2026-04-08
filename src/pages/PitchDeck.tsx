@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { Send, Sparkles, Presentation, BarChart3, Download } from "lucide-react";
+import { Send, Sparkles, Presentation, BarChart3, Download, FileText } from "lucide-react";
 import PptxGenJS from "pptxgenjs";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -283,18 +283,50 @@ const PitchDeck = () => {
     sendMessage(input);
   };
 
-  const lastAssistantMsg = [...messages].reverse().find((m) => m.role === "assistant");
+  const downloadPDF = (content: string) => {
+    const html = content
+      .split(/\n---\n/)
+      .filter((s) => s.trim())
+      .map((slide) => {
+        const lines = slide
+          .split("\n")
+          .map((l) => {
+            const t = l.trim();
+            if (!t) return "";
+            if (/^#{1,2}\s/.test(t)) return `<h2 style="color:#fff;margin:0 0 8px">${t.replace(/^#+\s*/, "").replace(/\*+/g, "")}</h2>`;
+            if (/^###\s/.test(t)) return `<h3 style="color:#c084fc;margin:0 0 6px">${t.replace(/^###\s*/, "").replace(/\*+/g, "")}</h3>`;
+            if (t.startsWith("|") && !t.match(/^\|[-\s|]+\|$/)) {
+              const cells = t.split("|").filter((c) => c.trim()).map((c) => c.trim().replace(/\*+/g, ""));
+              return `<p style="color:#d8b4fe;margin:2px 0;font-size:13px">${cells.join(" &nbsp;|&nbsp; ")}</p>`;
+            }
+            if (t.startsWith("- ") || t.startsWith("* ")) return `<p style="color:#e9d5ff;margin:2px 0 2px 16px">• ${t.replace(/^[-*]\s*/, "").replace(/\*+/g, "")}</p>`;
+            if (/^\d+\.\s/.test(t)) return `<p style="color:#e9d5ff;margin:2px 0 2px 16px">${t.replace(/\*+/g, "")}</p>`;
+            if (t.startsWith(">")) return `<blockquote style="color:#c084fc;margin:6px 0 6px 16px;font-style:italic;border-left:3px solid #a78bfa;padding-left:10px">${t.replace(/^>\s*/, "").replace(/\*+/g, "")}</blockquote>`;
+            if (t.startsWith("*") && t.endsWith("*")) return `<p style="color:#9ca3af;font-size:11px;font-style:italic;margin:4px 0">${t.replace(/^\*+|\*+$/g, "")}</p>`;
+            return `<p style="color:#e9d5ff;margin:2px 0">${t.replace(/\*+/g, "")}</p>`;
+          })
+          .join("");
+        return `<div style="background:#1e1b4b;padding:40px;margin-bottom:20px;border-radius:12px;page-break-after:always">${lines}</div>`;
+      })
+      .join("");
 
-  const downloadPPT = () => {
-    if (!lastAssistantMsg) return;
+    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');*{font-family:'Space Grotesk',sans-serif;box-sizing:border-box}body{margin:0;padding:20px;background:#0f0d2e}@media print{body{padding:0;background:#fff}div{box-shadow:none!important}}</style></head><body>${html}</body></html>`;
 
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(doc);
+    w.document.close();
+    setTimeout(() => w.print(), 400);
+  };
+
+  const downloadPPT = (content: string) => {
     const pptx = new PptxGenJS();
     pptx.layout = "LAYOUT_WIDE";
     pptx.author = "Pitch Deck AI";
     pptx.title = "Pitch Deck";
 
     // Parse markdown into slides split by ---
-    const rawSlides = lastAssistantMsg.content.split(/\n---\n/).filter((s) => s.trim());
+    const rawSlides = content.split(/\n---\n/).filter((s) => s.trim());
 
     for (const raw of rawSlides) {
       const slide = pptx.addSlide();
@@ -314,7 +346,7 @@ const PitchDeck = () => {
             x: 0.6, y: yPos, w: "90%",
             fontSize: trimmed.startsWith("## ") ? 22 : 28,
             bold: true, color: "FFFFFF",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
           });
           yPos += trimmed.startsWith("## ") ? 0.55 : 0.7;
           continue;
@@ -326,7 +358,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.6, y: yPos, w: "90%",
             fontSize: 18, bold: true, color: "C084FC",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
           });
           yPos += 0.45;
           continue;
@@ -343,7 +375,7 @@ const PitchDeck = () => {
                 x: 0.6, y: yPos, w: "90%",
                 fontSize: isHeader ? 13 : 12,
                 bold: isHeader, color: isHeader ? "FFFFFF" : "D8B4FE",
-                fontFace: "Inter",
+                fontFace: "Space Grotesk",
               }
             );
             yPos += 0.35;
@@ -357,7 +389,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 14, color: "E9D5FF",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
             bullet: { code: "2022", color: "A78BFA" },
           });
           yPos += 0.38;
@@ -370,7 +402,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 14, color: "E9D5FF",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
             bullet: { type: "number", color: "A78BFA" },
           });
           yPos += 0.38;
@@ -383,7 +415,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 13, italic: true, color: "C084FC",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
           });
           yPos += 0.4;
           continue;
@@ -395,7 +427,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.6, y: yPos, w: "90%",
             fontSize: 10, italic: true, color: "9CA3AF",
-            fontFace: "Inter",
+            fontFace: "Space Grotesk",
           });
           yPos += 0.3;
           continue;
@@ -405,7 +437,7 @@ const PitchDeck = () => {
         slide.addText(trimmed.replace(/\*+/g, ""), {
           x: 0.6, y: yPos, w: "90%",
           fontSize: 14, color: "E9D5FF",
-          fontFace: "Inter",
+          fontFace: "Space Grotesk",
         });
         yPos += 0.35;
       }
@@ -429,15 +461,6 @@ const PitchDeck = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            {lastAssistantMsg && (
-              <button
-                onClick={downloadPPT}
-                className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 text-xs font-bold text-white transition hover:opacity-90"
-              >
-                <Download className="h-3.5 w-3.5" />
-                Download PPT
-              </button>
-            )}
             <Link
               to="/revenuetracker"
               className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/70 transition hover:bg-white/10"
@@ -494,24 +517,44 @@ const PitchDeck = () => {
                   }`}
                 >
                   {msg.role === "assistant" ? (
-                    <div className="prose prose-sm prose-invert max-w-none [&_table]:text-white/90 [&_th]:text-white [&_td]:text-white/80 [&_th]:border-white/20 [&_td]:border-white/10 [&_hr]:border-white/10 [&_a]:text-purple-300 [&_a]:underline [&_blockquote]:text-white/70 [&_blockquote]:border-purple-400/50 [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_strong]:text-white [&_li]:text-white/80">
-                      <ReactMarkdown
-                        components={{
-                          a: ({ href, children, ...props }) => {
-                            if (href?.startsWith("/")) {
-                              return (
-                                <Link to={href} className="text-purple-300 hover:text-purple-200 underline" {...props}>
-                                  {children}
-                                </Link>
-                              );
-                            }
-                            return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
-                          },
-                        }}
-                      >
-                        {msg.content}
-                      </ReactMarkdown>
-                    </div>
+                    <>
+                      <div className="prose prose-sm prose-invert max-w-none [&_table]:text-white/90 [&_th]:text-white [&_td]:text-white/80 [&_th]:border-white/20 [&_td]:border-white/10 [&_hr]:border-white/10 [&_a]:text-purple-300 [&_a]:underline [&_blockquote]:text-white/70 [&_blockquote]:border-purple-400/50 [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_strong]:text-white [&_li]:text-white/80">
+                        <ReactMarkdown
+                          components={{
+                            a: ({ href, children, ...props }) => {
+                              if (href?.startsWith("/")) {
+                                return (
+                                  <Link to={href} className="text-purple-300 hover:text-purple-200 underline" {...props}>
+                                    {children}
+                                  </Link>
+                                );
+                              }
+                              return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
+                            },
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                      {!isLoading && (
+                        <div className="mt-3 flex gap-2 border-t border-white/10 pt-3">
+                          <button
+                            onClick={() => downloadPDF(msg.content)}
+                            className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/70 transition hover:bg-white/10"
+                          >
+                            <FileText className="h-3.5 w-3.5" />
+                            Save as PDF
+                          </button>
+                          <button
+                            onClick={() => downloadPPT(msg.content)}
+                            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 text-xs font-bold text-white transition hover:opacity-90"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            Download PPT
+                          </button>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <p className="text-sm">{msg.content}</p>
                   )}
