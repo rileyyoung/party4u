@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 interface TickerEntry {
   id: number;
+  customerId: string;
   name: string;
+  email: string;
   plan: string;
   amount: number;
   timestamp: Date;
@@ -27,6 +29,12 @@ const LAST_INITIALS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const randomName = () =>
   `${FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)]} ${LAST_INITIALS[Math.floor(Math.random() * 26)]}.`;
 
+const randomId = () =>
+  `CUS-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+const randomEmail = (name: string) =>
+  `${name.split(" ")[0].toLowerCase()}${Math.floor(Math.random() * 999)}@email.com`;
+
 const randomPlan = () => PLANS[Math.floor(Math.random() * PLANS.length)];
 
 const formatCurrency = (n: number) =>
@@ -43,9 +51,12 @@ const RevenueTracker = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const plan = randomPlan();
+      const name = randomName();
       const entry: TickerEntry = {
         id: nextId.current++,
-        name: randomName(),
+        customerId: randomId(),
+        name,
+        email: randomEmail(name),
         plan: plan.name,
         amount: plan.amount,
         timestamp: new Date(),
@@ -63,6 +74,45 @@ const RevenueTracker = () => {
 
   const mrrEstimate = totalRevenue * 0.82;
 
+  const downloadCSV = () => {
+    const headers = ["Customer Name", "Customer ID", "Email", "Date Subscribed", "Plan", "Monthly Amount ($)"];
+
+    // Pre-seeded historical data
+    const historical = [
+      ["Morgan K.", "CUS-7A3F1B", "morgan42@email.com", "2025-01-15 09:23:11", "Pro", "29"],
+      ["Taylor R.", "CUS-9D2E4C", "taylor881@email.com", "2025-01-18 14:05:33", "Business", "79"],
+      ["Casey M.", "CUS-1F8G5H", "casey204@email.com", "2025-02-02 11:47:20", "Starter", "9"],
+      ["Avery P.", "CUS-3J6K8L", "avery77@email.com", "2025-02-10 16:32:45", "Enterprise", "199"],
+      ["Quinn D.", "CUS-5N2Q7R", "quinn512@email.com", "2025-02-22 08:15:59", "Pro", "29"],
+      ["Drew S.", "CUS-8T4U1V", "drew339@email.com", "2025-03-01 10:08:17", "Business", "79"],
+      ["Jamie W.", "CUS-2X6Y9Z", "jamie150@email.com", "2025-03-14 13:55:42", "Starter", "9"],
+      ["Sage B.", "CUS-4A7C3D", "sage624@email.com", "2025-03-28 17:20:08", "Enterprise", "199"],
+      ["Reese F.", "CUS-6E1G8H", "reese88@email.com", "2025-04-05 09:44:31", "Pro", "29"],
+      ["Blake J.", "CUS-9K3L5M", "blake461@email.com", "2025-04-12 15:11:56", "Business", "79"],
+    ];
+
+    // Live ticker data
+    const liveRows = ticker.map((e) => [
+      e.name,
+      e.customerId,
+      e.email,
+      e.timestamp.toISOString().replace("T", " ").slice(0, 19),
+      e.plan,
+      e.amount.toString(),
+    ]);
+
+    const allRows = [headers, ...historical, ...liveRows];
+    const csvContent = allRows.map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `revenue-tracker-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-white px-6 py-12 text-[#4c1d95]">
       <div className="mx-auto w-full max-w-4xl">
@@ -74,12 +124,20 @@ const RevenueTracker = () => {
             </h1>
             <p className="mt-1 text-sm text-[#6b21a8]">Live subscription metrics</p>
           </div>
-          <Link
-            to="/"
-            className="font-body text-sm font-bold text-[#6b21a8] hover:underline"
-          >
-            Home
-          </Link>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={downloadCSV}
+              className="rounded-lg border border-[#e9d5ff] bg-[#faf5ff] px-4 py-2 text-sm font-bold text-[#4c1d95] transition-colors hover:bg-[#e9d5ff]"
+            >
+              ↓ Download Excel
+            </button>
+            <Link
+              to="/"
+              className="font-body text-sm font-bold text-[#6b21a8] hover:underline"
+            >
+              Home
+            </Link>
+          </div>
         </div>
 
         {/* Stat Cards */}
