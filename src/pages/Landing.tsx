@@ -10,28 +10,28 @@ const Landing = () => {
         </p>
 
         <div className="mt-10 rounded-xl border border-border bg-card p-6 shadow-card">
-          <h2 className="font-display text-2xl font-bold text-[#4c1d95]">Party4U</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h2 className="font-display text-3xl font-bold text-white">Party4U</h2>
+          <p className="mt-2 text-base text-white/80">
             Discover parties, events and nightlife.
           </p>
           <Link
             to="/tennis"
-            className="mt-5 inline-flex font-body text-lg font-bold text-white hover:underline"
+            className="mt-5 inline-flex font-body text-xl font-bold text-white hover:underline"
           >
-            Open Party4U
+            Open Party4U →
           </Link>
         </div>
 
         <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-card">
-          <h2 className="font-display text-2xl font-bold text-[#4c1d95]">Revenue Tracker</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h2 className="font-display text-3xl font-bold text-white">Revenue Tracker</h2>
+          <p className="mt-2 text-base text-white/80">
             Track revenue with a dedicated interface.
           </p>
           <Link
             to="/revenuetracker"
-            className="mt-5 inline-flex font-body text-lg font-bold text-white hover:underline"
+            className="mt-5 inline-flex font-body text-xl font-bold text-white hover:underline"
           >
-            Open Revenue Tracker
+            Open Revenue Tracker →
           </Link>
         </div>
       </div>
