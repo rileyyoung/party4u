@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -46,8 +46,8 @@
     --sidebar-border: 275 20% 20%;
     --sidebar-ring: 280 80% 60%;
 
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'Cormorant Garamond', serif;
+    --font-display: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
 
     --glow-primary: 0 0 30px hsl(280 80% 60% / 0.4), 0 0 60px hsl(280 80% 60% / 0.15);
     --glow-accent: 0 0 30px hsl(310 80% 55% / 0.4), 0 0 60px hsl(310 80% 55% / 0.15);
@@ -93,7 +93,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground font-body antialiased text-lg;
     background-image: 
       radial-gradient(ellipse at 20% 50%, hsl(280 80% 60% / 0.06) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 20%, hsl(310 80% 55% / 0.05) 0%, transparent 50%);

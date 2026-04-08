@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { Send, Sparkles, Presentation, BarChart3, ChevronLeft, ChevronRight } from "lucide-react";
+import { Send, Sparkles, Presentation, BarChart3, Download } from "lucide-react";
+import PptxGenJS from "pptxgenjs";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -282,6 +283,137 @@ const PitchDeck = () => {
     sendMessage(input);
   };
 
+  const lastAssistantMsg = [...messages].reverse().find((m) => m.role === "assistant");
+
+  const downloadPPT = () => {
+    if (!lastAssistantMsg) return;
+
+    const pptx = new PptxGenJS();
+    pptx.layout = "LAYOUT_WIDE";
+    pptx.author = "Pitch Deck AI";
+    pptx.title = "Pitch Deck";
+
+    // Parse markdown into slides split by ---
+    const rawSlides = lastAssistantMsg.content.split(/\n---\n/).filter((s) => s.trim());
+
+    for (const raw of rawSlides) {
+      const slide = pptx.addSlide();
+      slide.background = { color: "1E1B4B" };
+
+      const lines = raw.split("\n").filter((l) => l.trim());
+      let yPos = 0.4;
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        // Title (# heading)
+        if (/^#{1,2}\s/.test(trimmed)) {
+          const text = trimmed.replace(/^#+\s*/, "").replace(/\*+/g, "");
+          slide.addText(text, {
+            x: 0.6, y: yPos, w: "90%",
+            fontSize: trimmed.startsWith("## ") ? 22 : 28,
+            bold: true, color: "FFFFFF",
+            fontFace: "Inter",
+          });
+          yPos += trimmed.startsWith("## ") ? 0.55 : 0.7;
+          continue;
+        }
+
+        // H3 (### heading)
+        if (/^###\s/.test(trimmed)) {
+          const text = trimmed.replace(/^###\s*/, "").replace(/\*+/g, "");
+          slide.addText(text, {
+            x: 0.6, y: yPos, w: "90%",
+            fontSize: 18, bold: true, color: "C084FC",
+            fontFace: "Inter",
+          });
+          yPos += 0.45;
+          continue;
+        }
+
+        // Table row
+        if (trimmed.startsWith("|") && !trimmed.match(/^\|[-\s|]+\|$/)) {
+          const cells = trimmed.split("|").filter((c) => c.trim()).map((c) => c.trim().replace(/\*+/g, ""));
+          if (cells.length >= 2) {
+            const isHeader = lines.indexOf(line) === lines.findIndex((l) => l.trim().startsWith("|"));
+            slide.addText(
+              cells.map((c) => c).join("   |   "),
+              {
+                x: 0.6, y: yPos, w: "90%",
+                fontSize: isHeader ? 13 : 12,
+                bold: isHeader, color: isHeader ? "FFFFFF" : "D8B4FE",
+                fontFace: "Inter",
+              }
+            );
+            yPos += 0.35;
+          }
+          continue;
+        }
+
+        // Bullet point
+        if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+          const text = trimmed.replace(/^[-*]\s*/, "").replace(/\*+/g, "");
+          slide.addText(text, {
+            x: 0.8, y: yPos, w: "85%",
+            fontSize: 14, color: "E9D5FF",
+            fontFace: "Inter",
+            bullet: { code: "2022", color: "A78BFA" },
+          });
+          yPos += 0.38;
+          continue;
+        }
+
+        // Numbered list
+        if (/^\d+\.\s/.test(trimmed)) {
+          const text = trimmed.replace(/^\d+\.\s*/, "").replace(/\*+/g, "");
+          slide.addText(text, {
+            x: 0.8, y: yPos, w: "85%",
+            fontSize: 14, color: "E9D5FF",
+            fontFace: "Inter",
+            bullet: { type: "number", color: "A78BFA" },
+          });
+          yPos += 0.38;
+          continue;
+        }
+
+        // Blockquote
+        if (trimmed.startsWith(">")) {
+          const text = trimmed.replace(/^>\s*/, "").replace(/\*+/g, "");
+          slide.addText(text, {
+            x: 0.8, y: yPos, w: "85%",
+            fontSize: 13, italic: true, color: "C084FC",
+            fontFace: "Inter",
+          });
+          yPos += 0.4;
+          continue;
+        }
+
+        // Italic footnote
+        if (trimmed.startsWith("*") && trimmed.endsWith("*")) {
+          const text = trimmed.replace(/^\*+|\*+$/g, "");
+          slide.addText(text, {
+            x: 0.6, y: yPos, w: "90%",
+            fontSize: 10, italic: true, color: "9CA3AF",
+            fontFace: "Inter",
+          });
+          yPos += 0.3;
+          continue;
+        }
+
+        // Regular text
+        slide.addText(trimmed.replace(/\*+/g, ""), {
+          x: 0.6, y: yPos, w: "90%",
+          fontSize: 14, color: "E9D5FF",
+          fontFace: "Inter",
+        });
+        yPos += 0.35;
+      }
+    }
+
+    pptx.writeFile({ fileName: `pitch-deck-${new Date().toISOString().slice(0, 10)}.pptx` });
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#1e1b4b]">
       {/* Header */}
@@ -296,7 +428,16 @@ const PitchDeck = () => {
               <p className="text-xs text-white/50">Powered by your Revenue Tracker data</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {lastAssistantMsg && (
+              <button
+                onClick={downloadPPT}
+                className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 text-xs font-bold text-white transition hover:opacity-90"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download PPT
+              </button>
+            )}
             <Link
               to="/revenuetracker"
               className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/70 transition hover:bg-white/10"
