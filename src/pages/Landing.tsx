@@ -34,6 +34,19 @@ const Landing = () => {
             Open Revenue Tracker →
           </Link>
         </div>
+
+        <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-card">
+          <h2 className="font-display text-3xl font-bold text-white">Pitch Deck AI</h2>
+          <p className="mt-2 text-base text-white/80">
+            AI-powered pitch deck generator linked to your revenue data.
+          </p>
+          <Link
+            to="/pitchdeck"
+            className="mt-5 inline-flex font-body text-xl font-bold text-white hover:underline"
+          >
+            Open Pitch Deck AI →
+          </Link>
+        </div>
       </div>
     </div>
   );
