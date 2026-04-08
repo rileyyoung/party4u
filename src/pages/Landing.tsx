@@ -21,6 +21,19 @@ const Landing = () => {
             Open Party4U
           </Link>
         </div>
+
+        <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-card">
+          <h2 className="font-display text-2xl font-bold">Revenue Tracker</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Track revenue with a dedicated interface.
+          </p>
+          <Link
+            to="/revenuetracker"
+            className="mt-5 inline-flex font-body text-sm font-medium text-primary hover:underline"
+          >
+            Open Revenue Tracker
+          </Link>
+        </div>
       </div>
     </div>
   );

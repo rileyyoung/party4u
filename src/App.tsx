@@ -14,6 +14,7 @@ import Messages from "./pages/Messages";
 import PartyFinder from "./pages/PartyFinder";
 import NotFound from "./pages/NotFound";
 import Landing from "./pages/Landing";
+import RevenueTracker from "./pages/RevenueTracker";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/revenuetracker" element={<RevenueTracker />} />
             <Route path="/tennis" element={<Index />} />
             <Route path="/tennis/event/:id" element={<EventDetail />} />
             <Route path="/tennis/create" element={<CreateEvent />} />
