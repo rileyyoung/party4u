@@ -306,11 +306,11 @@ const PitchDeck = () => {
             return `<p style="color:#e9d5ff;margin:2px 0">${t.replace(/\*+/g, "")}</p>`;
           })
           .join("");
-        return `<div style="background:#1e1b4b;padding:40px;margin-bottom:20px;border-radius:12px;page-break-after:always">${lines}</div>`;
+        return `<div style="background:#1e1b4b;padding:48px 56px;width:10in;height:7.5in;margin:0 auto;border-radius:0;page-break-after:always;box-sizing:border-box;overflow:hidden">${lines}</div>`;
       })
       .join("");
 
-    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');*{font-family:'Space Grotesk',sans-serif;box-sizing:border-box}body{margin:0;padding:20px;background:#0f0d2e}@media print{body{padding:0;background:#fff}div{box-shadow:none!important}}</style></head><body>${html}</body></html>`;
+    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');@page{size:10in 7.5in landscape;margin:0}*{font-family:'Space Grotesk',sans-serif;box-sizing:border-box}body{margin:0;padding:0;background:#0f0d2e}@media print{body{padding:0;background:#1e1b4b}}</style></head><body>${html}</body></html>`;
 
     const w = window.open("", "_blank");
     if (!w) return;
