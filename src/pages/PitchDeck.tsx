@@ -310,7 +310,7 @@ const PitchDeck = () => {
       })
       .join("");
 
-    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');@page{size:10in 7.5in landscape;margin:0}*{font-family:'Playfair Display',serif;box-sizing:border-box}body{margin:0;padding:0;background:#0f0d2e}@media print{body{padding:0;background:#1e1b4b}}</style></head><body>${html}</body></html>`;
+    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');@page{size:10in 7.5in landscape;margin:0}*{font-family:'Inter',sans-serif;box-sizing:border-box}body{margin:0;padding:0;background:#0f0d2e}@media print{body{padding:0;background:#1e1b4b}}</style></head><body>${html}</body></html>`;
 
     const w = window.open("", "_blank");
     if (!w) return;
@@ -346,7 +346,7 @@ const PitchDeck = () => {
             x: 0.6, y: yPos, w: "90%",
             fontSize: trimmed.startsWith("## ") ? 22 : 28,
             bold: true, color: "FFFFFF",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
           });
           yPos += trimmed.startsWith("## ") ? 0.55 : 0.7;
           continue;
@@ -358,7 +358,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.6, y: yPos, w: "90%",
             fontSize: 18, bold: true, color: "C084FC",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
           });
           yPos += 0.45;
           continue;
@@ -375,7 +375,7 @@ const PitchDeck = () => {
                 x: 0.6, y: yPos, w: "90%",
                 fontSize: isHeader ? 13 : 12,
                 bold: isHeader, color: isHeader ? "FFFFFF" : "D8B4FE",
-                fontFace: "Playfair Display",
+                fontFace: "Inter",
               }
             );
             yPos += 0.35;
@@ -389,7 +389,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 14, color: "E9D5FF",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
             bullet: { code: "2022", color: "A78BFA" },
           });
           yPos += 0.38;
@@ -402,7 +402,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 14, color: "E9D5FF",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
             bullet: { type: "number", color: "A78BFA" },
           });
           yPos += 0.38;
@@ -415,7 +415,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.8, y: yPos, w: "85%",
             fontSize: 13, italic: true, color: "C084FC",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
           });
           yPos += 0.4;
           continue;
@@ -427,7 +427,7 @@ const PitchDeck = () => {
           slide.addText(text, {
             x: 0.6, y: yPos, w: "90%",
             fontSize: 10, italic: true, color: "9CA3AF",
-            fontFace: "Playfair Display",
+            fontFace: "Inter",
           });
           yPos += 0.3;
           continue;
@@ -437,7 +437,7 @@ const PitchDeck = () => {
         slide.addText(trimmed.replace(/\*+/g, ""), {
           x: 0.6, y: yPos, w: "90%",
           fontSize: 14, color: "E9D5FF",
-          fontFace: "Playfair Display",
+          fontFace: "Inter",
         });
         yPos += 0.35;
       }
