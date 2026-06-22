@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 const projects = [
   {
     title: "ShopMy Pitch",
-    desc: "Recreating ShopMy — the SaaS affiliate marketing platform for creators and brands.",
+    desc: "shopmy + a potential creator feature",
     to: "/shopmypitch",
     accent: "from-rose-500 to-orange-400",
     tag: "SaaS",
