@@ -50,7 +50,7 @@ const Landing = () => {
       <nav className="relative z-10 border-b border-gray-200/50 bg-white/40 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <span className="text-sm font-semibold tracking-wide text-gray-900">Riley Young</span>
-          <span className="text-xs font-medium tracking-wider text-gray-400 uppercase">me + lovable + windsurf</span>
+          <span className="text-xs font-medium tracking-wider text-gray-400 uppercase">me + windsurf + claude</span>
         </div>
       </nav>
 
