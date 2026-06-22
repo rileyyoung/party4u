@@ -14,6 +14,7 @@ import {
   Zap,
   CheckCircle2,
   ChevronRight,
+  Download,
 } from "lucide-react";
 
 // Mock data
@@ -122,6 +123,193 @@ const ShopMyPitch = () => {
 
   const maxRevenue = Math.max(...MONTHLY_REVENUE.map((m) => m.revenue));
 
+  const downloadBrandPitchDeck = () => {
+    const slide = (content: string) =>
+      `<div style="background:#fff;width:13.33in;height:7.5in;padding:60px 80px;box-sizing:border-box;page-break-after:always;position:relative;overflow:hidden">${content}</div>`;
+
+    const badge = `<div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f43f5e,#f97316);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:0.5px">★ ShopMy</div>`;
+
+    const sectionTitle = (t: string) => `<h2 style="font-size:32px;font-weight:800;color:#111;margin:0 0 6px">${t}</h2>`;
+    const subtitle = (t: string) => `<p style="font-size:15px;color:#888;margin:0 0 30px">${t}</p>`;
+
+    const metricBox = (val: string, label: string) =>
+      `<div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:24px;text-align:center;flex:1"><div style="font-size:28px;font-weight:800;color:#111">${val}</div><div style="font-size:11px;color:#999;margin-top:4px;text-transform:uppercase;letter-spacing:1px">${label}</div></div>`;
+
+    const barChart = MONTHLY_REVENUE.map(
+      (m) =>
+        `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:9px;font-weight:600;color:#666">$${m.revenue}M</div><div style="width:100%;height:${(m.revenue / maxRevenue) * 140}px;background:linear-gradient(to top,#f43f5e,#fb923c);border-radius:6px 6px 0 0"></div><div style="font-size:9px;color:#aaa">${m.month}</div></div>`
+    ).join("");
+
+    const creatorRows = TOP_CREATORS.map(
+      (c) =>
+        `<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:12px 16px;font-weight:600;color:#111">${c.name}</td><td style="padding:12px 16px;color:#888">${c.handle}</td><td style="padding:12px 16px;color:#666">${c.niche}</td><td style="padding:12px 16px;color:#666">${c.followers}</td><td style="padding:12px 16px;font-weight:700;color:#059669">${c.earnings}</td></tr>`
+    ).join("");
+
+    const brandRows = BRANDS.map(
+      (b) =>
+        `<tr style="border-bottom:1px solid #f3f4f6"><td style="padding:12px 16px;font-weight:600;color:#111">${b.name}</td><td style="padding:12px 16px"><span style="background:#f3f4f6;padding:2px 10px;border-radius:12px;font-size:12px;color:#666">${b.category}</span></td><td style="padding:12px 16px;color:#666">${b.campaigns} campaigns</td><td style="padding:12px 16px;font-weight:700;color:#059669">${b.roi} ROI</td></tr>`
+    ).join("");
+
+    const caseStudies = [
+      { brand: "Glossier", creator: "Ava Chen", spend: "$12,000", revenue: "$98,400", roi: "8.2x", desc: "Ava's 3-part skincare routine series drove 14,200 clicks and 2,840 conversions over 6 weeks. Her authentic review of Boy Brow became the #1 affiliate link on the platform for Q3." },
+      { brand: "Allbirds", creator: "Jordan Blake", spend: "$8,500", revenue: "$52,700", roi: "6.2x", desc: "Jordan integrated Allbirds into his daily fitness content. The 'What I Wear to Train' series generated sustained organic traffic with a 4.1% conversion rate — 3x platform average." },
+      { brand: "Mejuri", creator: "Sophie Kim", spend: "$15,000", revenue: "$166,500", roi: "11.1x", desc: "Sophie's curated jewelry collection storefront earned passive revenue for 9 months. Her Valentine's Day gift guide alone drove $42K in sales in a single weekend." },
+    ];
+
+    const caseStudySlides = caseStudies.map(
+      (cs) => slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle(`Case Study: ${cs.brand} × ${cs.creator}`)}
+          ${subtitle("Real campaign performance data")}
+          <div style="display:flex;gap:16px;margin-bottom:30px">
+            ${metricBox(cs.spend, "Brand Spend")}
+            ${metricBox(cs.revenue, "Revenue Generated")}
+            ${metricBox(cs.roi, "Return on Investment")}
+          </div>
+          <div style="background:#fafafa;border:1px solid #eee;border-radius:16px;padding:28px">
+            <p style="font-size:14px;line-height:1.7;color:#555;margin:0">${cs.desc}</p>
+          </div>
+          <div style="position:absolute;bottom:50px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:11px;color:#ccc">ShopMy Brand Pitch Deck — Confidential</span>
+            <span style="font-size:11px;color:#ccc">shopmy.us</span>
+          </div>
+        </div>
+      `)
+    ).join("");
+
+    const pages = [
+      // Slide 1: Title
+      slide(`
+        <div style="display:flex;flex-direction:column;justify-content:center;height:100%;background:linear-gradient(135deg,#1e1b4b 0%,#4c1d95 50%,#7c3aed 100%);margin:-60px -80px;padding:80px;border-radius:0">
+          <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:24px"><div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#f43f5e,#f97316);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;font-weight:900">S</div><span style="font-size:24px;font-weight:800;color:#fff">ShopMy</span></div>
+          <h1 style="font-size:52px;font-weight:900;color:#fff;margin:0;line-height:1.15">Why Your Brand<br/>Should Be on ShopMy</h1>
+          <p style="font-size:18px;color:rgba(255,255,255,0.6);margin-top:16px;max-width:600px">The creator commerce platform powering $320M+ in GMV for 6,200+ brands. This is your growth channel.</p>
+          <div style="position:absolute;bottom:60px;left:80px;font-size:12px;color:rgba(255,255,255,0.3)">Confidential — Prepared for Brand Partners — 2026</div>
+        </div>
+      `),
+
+      // Slide 2: The Opportunity
+      slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle("The $6.8B Opportunity")}
+          ${subtitle("Creator commerce is the fastest-growing acquisition channel for DTC brands")}
+          <div style="display:flex;gap:16px;margin-bottom:30px">
+            ${metricBox("$6.8B", "Creator Economy TAM by 2028")}
+            ${metricBox("72%", "Consumers Trust Creators Over Ads")}
+            ${metricBox("3.2x", "Higher CVR vs Traditional Affiliate")}
+            ${metricBox("47%", "YoY Growth in Creator-Driven Sales")}
+          </div>
+          <div style="background:#111;border-radius:16px;padding:28px;color:#fff">
+            <p style="font-size:14px;line-height:1.7;margin:0;color:rgba(255,255,255,0.7)"><strong style="color:#fff">The shift is happening now.</strong> Consumers increasingly discover and purchase products through creators they trust — not ads. Brands that build authentic creator relationships today will own tomorrow's customer acquisition.</p>
+          </div>
+        </div>
+      `),
+
+      // Slide 3: Platform Growth
+      slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle("Platform Growth — Monthly GMV")}
+          ${subtitle("Consistent month-over-month growth across all verticals")}
+          <div style="display:flex;align-items:flex-end;gap:8px;height:200px;margin-bottom:30px">${barChart}</div>
+          <div style="display:flex;gap:16px">
+            ${metricBox("48,000+", "Active Creators")}
+            ${metricBox("6,200+", "Brand Partners")}
+            ${metricBox("$320M+", "Total GMV")}
+            ${metricBox("94%", "Creator Retention")}
+          </div>
+        </div>
+      `),
+
+      // Slide 4: Top Creators
+      slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle("Top Creators Driving Brand Revenue")}
+          ${subtitle("This month's highest-performing creators across all niches")}
+          <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee;border-radius:12px;overflow:hidden">
+            <thead><tr style="background:#fafafa;border-bottom:2px solid #eee">
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Creator</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Handle</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Niche</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Followers</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Monthly Earnings</th>
+            </tr></thead>
+            <tbody>${creatorRows}</tbody>
+          </table>
+          <p style="font-size:12px;color:#bbb;margin-top:16px;font-style:italic">*Earnings shown are creator commissions from affiliate links, storefronts, and brand partnerships combined.</p>
+        </div>
+      `),
+
+      // Slide 5: Brand ROI
+      slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle("Brand Partner Performance")}
+          ${subtitle("Top brands and their return on creator partnerships")}
+          <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee;border-radius:12px;overflow:hidden">
+            <thead><tr style="background:#fafafa;border-bottom:2px solid #eee">
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Brand</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Category</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">Activity</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#999">ROI</th>
+            </tr></thead>
+            <tbody>${brandRows}</tbody>
+          </table>
+          <div style="display:flex;gap:16px;margin-top:24px">
+            ${metricBox("8.6x", "Average Brand ROI")}
+            ${metricBox("$4.20", "Avg Cost Per Acquisition")}
+            ${metricBox("22 days", "Avg Time to First Sale")}
+          </div>
+        </div>
+      `),
+
+      // Slides 6-8: Case Studies
+      caseStudySlides,
+
+      // Slide 9: How It Works
+      slide(`
+        ${badge}
+        <div style="margin-top:30px">
+          ${sectionTitle("How It Works for Brands")}
+          ${subtitle("Launch your first creator campaign in under 10 minutes")}
+          <div style="display:flex;gap:20px">
+            ${[
+              { step: "1", title: "Create Your Brand Profile", desc: "Upload products, set commission rates, and define your ideal creator partnerships. Our AI indexes your catalog instantly." },
+              { step: "2", title: "Discover & Match Creators", desc: "Our algorithm surfaces creators whose audience aligns with your target customer. Filter by niche, engagement rate, audience demographics, and past performance." },
+              { step: "3", title: "Launch Campaigns", desc: "Choose affiliate, gifting, or paid collaboration. Send products, set budgets, and track everything from a single dashboard in real-time." },
+              { step: "4", title: "Scale What Works", desc: "See full-funnel attribution from impression to sale. Double down on top performers. Our platform auto-optimizes commission structures for maximum ROI." },
+            ].map((s) => `<div style="flex:1;background:#fafafa;border:1px solid #eee;border-radius:16px;padding:24px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f43f5e,#f97316);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:14px">${s.step}</div><div style="font-size:15px;font-weight:700;color:#111;margin-bottom:8px">${s.title}</div><div style="font-size:12px;line-height:1.6;color:#777">${s.desc}</div></div>`).join("")}
+          </div>
+        </div>
+      `),
+
+      // Slide 10: CTA
+      slide(`
+        <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;background:linear-gradient(135deg,#1e1b4b 0%,#4c1d95 50%,#7c3aed 100%);margin:-60px -80px;padding:80px;border-radius:0">
+          <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:32px"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#f43f5e,#f97316);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;font-weight:900">S</div></div>
+          <h1 style="font-size:48px;font-weight:900;color:#fff;margin:0">Ready to grow with creators?</h1>
+          <p style="font-size:18px;color:rgba(255,255,255,0.5);margin-top:16px;max-width:500px">Join 6,200+ brands already using ShopMy to drive authentic, high-converting revenue through creator partnerships.</p>
+          <div style="margin-top:32px;display:flex;gap:12px">
+            <div style="background:#fff;color:#111;padding:14px 32px;border-radius:14px;font-size:15px;font-weight:700">Get Started — It's Free to List</div>
+            <div style="border:2px solid rgba(255,255,255,0.3);color:#fff;padding:14px 32px;border-radius:14px;font-size:15px;font-weight:700">Talk to Sales</div>
+          </div>
+          <div style="position:absolute;bottom:50px;font-size:12px;color:rgba(255,255,255,0.2)">shopmy.us — Confidential Brand Pitch Deck — 2026</div>
+        </div>
+      `),
+    ].join("");
+
+    const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>ShopMy Brand Pitch Deck</title><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');@page{size:13.33in 7.5in landscape;margin:0}*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0}body{margin:0;padding:0}@media print{body{padding:0}}</style></head><body>${pages}</body></html>`;
+
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(doc);
+    w.document.close();
+    setTimeout(() => w.print(), 500);
+  };
+
   const tabs: { key: Tab; label: string }[] = [
     { key: "overview", label: "Overview" },
     { key: "creators", label: "Creators" },
@@ -169,12 +357,19 @@ const ShopMyPitch = () => {
               ShopMy connects creators with the brands they love — turning authentic recommendations
               into revenue through affiliate links, shoppable storefronts, and brand partnerships.
             </p>
-            <div className="mt-8 flex gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <button className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800">
                 Get Started <ArrowRight className="h-4 w-4" />
               </button>
               <button className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:shadow-sm">
                 See Demo
+              </button>
+              <button
+                onClick={downloadBrandPitchDeck}
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 shadow-lg shadow-rose-200/50"
+              >
+                <Download className="h-4 w-4" />
+                Download Brand Pitch Deck
               </button>
             </div>
           </div>
