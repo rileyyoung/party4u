@@ -3,27 +3,6 @@ import { ArrowRight } from "lucide-react";
 
 const projects = [
   {
-    title: "Party4U",
-    desc: "Discover parties, events and nightlife.",
-    to: "/tennis",
-    accent: "from-violet-600 to-indigo-600",
-    tag: "Social",
-  },
-  {
-    title: "Revenue Tracker",
-    desc: "Track revenue with a dedicated interface.",
-    to: "/revenuetracker",
-    accent: "from-fuchsia-600 to-pink-600",
-    tag: "Analytics",
-  },
-  {
-    title: "Pitch Deck AI",
-    desc: "AI-powered pitch deck generator linked to your revenue data.",
-    to: "/pitchdeck",
-    accent: "from-purple-600 to-violet-600",
-    tag: "AI",
-  },
-  {
     title: "ShopMy Pitch",
     desc: "Recreating ShopMy — the SaaS affiliate marketing platform for creators and brands.",
     to: "/shopmypitch",

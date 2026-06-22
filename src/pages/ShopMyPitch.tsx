@@ -15,6 +15,9 @@ import {
   CheckCircle2,
   ChevronRight,
   Download,
+  MessageCircle,
+  ExternalLink,
+  AlertCircle,
 } from "lucide-react";
 
 // Mock data
@@ -390,6 +393,109 @@ const ShopMyPitch = () => {
                 <div className="mt-2 text-2xl font-extrabold text-gray-900">{s.value}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* AUTO-LINK Feature Showcase */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-rose-500 via-pink-500 to-orange-400 py-16">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_60%)]" />
+        <div className="mx-auto max-w-5xl px-6 relative">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white">
+              <Zap className="h-3 w-3" /> New Feature
+            </span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Auto-Link
+          </h2>
+          <p className="mt-3 max-w-xl text-base text-white/80 leading-relaxed">
+            Your followers are asking for product links you haven't shared yet. Auto-Link detects repeated
+            questions in your comments and suggests shoppable links — so you never miss revenue hiding in plain sight.
+          </p>
+
+          {/* Mock comment feed */}
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            {/* Left: Detected Comments */}
+            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <MessageCircle className="h-4 w-4 text-white" />
+                <span className="text-sm font-bold text-white uppercase tracking-wider">Detected Comments</span>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { q: "what lip combo is this?? 😍", count: 847, time: "last 48h" },
+                  { q: "NEED this lip combo pls link!!", count: 612, time: "last 48h" },
+                  { q: "lip combo??? someone help", count: 394, time: "last 72h" },
+                  { q: "what shade is this omg", count: 281, time: "last 24h" },
+                  { q: "drop the lip link sis 🙏", count: 203, time: "last 24h" },
+                ].map((c, i) => (
+                  <div key={i} className="flex items-center justify-between rounded-xl bg-white/10 px-4 py-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white truncate">"{c.q}"</p>
+                      <p className="text-[11px] text-white/50 mt-0.5">{c.time}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 ml-3 shrink-0">
+                      <AlertCircle className="h-3 w-3 text-amber-300" />
+                      <span className="text-sm font-extrabold text-white">{c.count.toLocaleString()}×</span>
+                    </div>
+                  </div>
+                ))}
+                <div className="pt-2 text-center">
+                  <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">2,337 total unlinked requests</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Suggested Link */}
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl bg-white p-6 shadow-2xl shadow-rose-900/20 flex-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-orange-400">
+                    <Link2 className="h-3.5 w-3.5 text-white" />
+                  </div>
+                  <span className="text-sm font-bold text-gray-900 uppercase tracking-wider">Suggested Link</span>
+                </div>
+
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 mb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-pink-100 to-rose-200 flex items-center justify-center text-lg shrink-0">💋</div>
+                    <div>
+                      <p className="text-sm font-bold text-gray-900">Charlotte Tilbury Pillow Talk Lip Kit</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Lip Liner + Lipstick + Gloss</p>
+                      <p className="text-xs font-bold text-emerald-600 mt-1">$12.40 commission per sale</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="rounded-lg bg-rose-50 p-3 text-center">
+                    <div className="text-lg font-extrabold text-rose-600">$10.5K</div>
+                    <div className="text-[10px] font-medium text-rose-400 uppercase tracking-wider">Est. Revenue</div>
+                  </div>
+                  <div className="rounded-lg bg-amber-50 p-3 text-center">
+                    <div className="text-lg font-extrabold text-amber-600">847</div>
+                    <div className="text-[10px] font-medium text-amber-400 uppercase tracking-wider">Requests</div>
+                  </div>
+                  <div className="rounded-lg bg-emerald-50 p-3 text-center">
+                    <div className="text-lg font-extrabold text-emerald-600">18.2%</div>
+                    <div className="text-[10px] font-medium text-emerald-400 uppercase tracking-wider">Est. CVR</div>
+                  </div>
+                </div>
+
+                <button className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-orange-400 px-5 py-3 text-sm font-bold text-white transition hover:opacity-90 shadow-lg shadow-rose-200/50">
+                  <ExternalLink className="h-4 w-4" />
+                  Create Auto-Link Now
+                </button>
+              </div>
+
+              <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-5">
+                <p className="text-sm text-white/90 leading-relaxed">
+                  <span className="font-bold text-white">You're leaving $10,500+ on the table.</span>{" "}
+                  Auto-Link detects what your audience is begging for and generates commission-earning links instantly. No more scrolling through comments.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
