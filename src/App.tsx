@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import Landing from "./pages/Landing";
 import RevenueTracker from "./pages/RevenueTracker";
 import PitchDeck from "./pages/PitchDeck";
+import ShopMyPitch from "./pages/ShopMyPitch";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/revenuetracker" element={<RevenueTracker />} />
             <Route path="/pitchdeck" element={<PitchDeck />} />
+            <Route path="/shopmypitch" element={<ShopMyPitch />} />
             <Route path="/tennis" element={<Index />} />
             <Route path="/tennis/event/:id" element={<EventDetail />} />
             <Route path="/tennis/create" element={<CreateEvent />} />
