@@ -57,11 +57,8 @@ const Landing = () => {
       {/* Hero */}
       <div className="relative z-10 mx-auto max-w-3xl px-6 pt-20 pb-8">
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-          Projects
+          Featured Project
         </h1>
-        <p className="mt-3 max-w-lg text-base text-gray-500 leading-relaxed">
-          A collection of things I've built with Lovable and Windsurf.
-        </p>
       </div>
 
       {/* Project cards */}
